@@ -2,8 +2,21 @@
 
 class Clock:
     def __init__(self, h=0, m=0):
-        self.hours = h
-        self.minutes = m
+        try:
+            if type(h) != type(1):
+                raise TypeError("Didn't enter integers for hours/minutes") 
+            elif h<0 or h>23 or m<0:
+                raise ValueError("hour(s) and/or minute(s) set out of range")
+        except (TypeError, ValueError):
+            print("Entered wrong type of argument(s) or argument(s) out of range")
+            raise
+        else:
+            self.hours = h
+            self.minutes = m
+            self.hours = self.minutes//60 + self.hours
+            self.minutes = self.minutes % 60
+            self.hours = self.hours % 24
+            
 
     def tick(self, m=1):
         self.minutes = self.minutes + m
@@ -16,14 +29,26 @@ class Clock:
 
 if __name__ == '__main__':
 
-    clock1 = Clock()
-    clock2 = Clock(23, 55)
+    clock0 = Clock()
+    clockN = Clock(23, 55)
 
-    print('clock 1 set at: ',  clock1)
-    print('clock 2 set at: ',  clock2)
+    clock0.tick()
+    print("The time should be: 00:01\n")
+    print(clock0)
+    print()
 
-    clock1.tick()
-    clock2.tick(6)
+    clockN.tick(6)
+    print("The time should be: 00:01\n")
+    print(clockN)
+    print()
 
-    print('clock 1 after tick is set at: ', clock1)
-    print('clock 2 after 6 minute tick is set at: ',  clock2)
+    clockN.tick(61)
+    print("The time should be: 01:02\n")
+    print(clockN)
+    print()
+
+    clock0.tick(61)
+    print("The time should be: 01:02\n")
+    print(clockN)
+    print()
+
